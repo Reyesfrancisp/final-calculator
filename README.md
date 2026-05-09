@@ -1,9 +1,9 @@
-# FastAPI BREAD Calculator
+# FastAPI Final Calculator
 
 A robust, full-stack calculator application featuring user authentication and complete BREAD (Browse, Read, Edit, Add, Delete) operations. Built with FastAPI and dynamically rendered Jinja2 templates, this project utilizes a fully automated DevSecOps CI/CD pipeline with Pytest, Playwright UI testing, and Trivy container security scanning.
 
 ## 🔗 Live Docker Hub Repository
-**Docker Image:** [reyesfrancisp/bread_calculator](https://hub.docker.com/repositories/reyesfrancisp)
+**Docker Image:** [reyesfrancisp/final_calculator](https://hub.docker.com/repositories/reyesfrancisp)
 
 ---
 
@@ -23,8 +23,8 @@ This application is fully containerized. You do not need to install Python or Po
 
 **1. Clone the repository:**
 ```bash
-git clone [https://github.com/Reyesfrancisp/bread_calculator.git](https://github.com/Reyesfrancisp/bread_calculator.git)
-cd bread_calculator
+git clone [https://github.com/Reyesfrancisp/final-calculator.git](https://github.com/Reyesfrancisp/final-calculator.git)
+cd final-calculator
 ```
 
 **2. Build and start the containers:**
