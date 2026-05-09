@@ -104,3 +104,43 @@ def test_delete_calculation(auth_user: Page, fastapi_server: str):
     # Verify deletion success - The Dashboard uses the static successAlert, NOT the toast!
     expect(page.locator("#successAlert")).to_be_visible()
     expect(page.locator("#successMessage")).to_contain_text("deleted successfully")
+
+def test_create_exponentiation_calculation(page: Page, test_user: dict, base_url: str):
+    """Test creating an exponentiation calculation via the UI."""
+    page.goto(f"{base_url}/dashboard")
+    
+    # Capture and fill the form
+    page.select_option("select#calcType", "exponentiation")
+    page.fill("input#calcInputs", "2, 3")
+    
+    # Submit the form
+    page.click("button[type='submit']")
+    
+    # Wait for the success message
+    page.wait_for_selector("#successAlert:not(.hidden)")
+    
+    # Verify it was captured in the history table correctly (2^3 = 8)
+    row = page.locator("#calculationsTable tr").first
+    assert "Exponentiation" in row.inner_text()
+    assert "2, 3" in row.inner_text()
+    assert "8" in row.inner_text()
+
+def test_create_modulus_calculation(page: Page, test_user: dict, base_url: str):
+    """Test creating a modulus calculation via the UI."""
+    page.goto(f"{base_url}/dashboard")
+    
+    # Capture and fill the form
+    page.select_option("select#calcType", "modulus")
+    page.fill("input#calcInputs", "10, 3")
+    
+    # Submit the form
+    page.click("button[type='submit']")
+    
+    # Wait for the success message
+    page.wait_for_selector("#successAlert:not(.hidden)")
+    
+    # Verify it was captured in the history table correctly (10 % 3 = 1)
+    row = page.locator("#calculationsTable tr").first
+    assert "Modulus" in row.inner_text()
+    assert "10, 3" in row.inner_text()
+    assert "1" in row.inner_text()
