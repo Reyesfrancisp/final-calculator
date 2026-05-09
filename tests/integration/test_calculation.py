@@ -150,3 +150,27 @@ def test_invalid_inputs_for_division():
     division = Division(user_id=dummy_user_id(), inputs=[10])
     with pytest.raises(ValueError, match="Inputs must be a list with at least two numbers."):
         division.get_result()
+
+def test_exponentiation_get_result():
+    """Test that Exponentiation.get_result returns the correct power."""
+    from app.models.calculation import Exponentiation
+    inputs = [2, 3, 2] # (2^3)^2 = 8^2 = 64
+    exponentiation = Exponentiation(user_id=dummy_user_id(), inputs=inputs)
+    result = exponentiation.get_result()
+    assert result == 64, f"Expected 64, got {result}"
+
+def test_modulus_get_result():
+    """Test that Modulus.get_result returns the correct remainder."""
+    from app.models.calculation import Modulus
+    inputs = [10, 3]
+    modulus = Modulus(user_id=dummy_user_id(), inputs=inputs)
+    result = modulus.get_result()
+    assert result == 1, f"Expected 1, got {result}"
+
+def test_modulus_by_zero():
+    """Test that Modulus.get_result raises ValueError on zero."""
+    from app.models.calculation import Modulus
+    inputs = [10, 0]
+    modulus = Modulus(user_id=dummy_user_id(), inputs=inputs)
+    with pytest.raises(ValueError, match="Cannot modulo by zero."):
+        modulus.get_result()

@@ -318,3 +318,43 @@ def test_model_division():
     with pytest.raises(ValueError):
         calc_zero = Calculation.create("division", dummy_user_id, [100, 0])
         calc_zero.get_result()
+
+def test_create_calculation_exponentiation(base_url: str):
+    user_data = {
+        "first_name": "Calc",
+        "last_name": "Exp",
+        "email": f"calc.exp{uuid4()}@example.com",
+        "username": f"calc_exp_{uuid4()}",
+        "password": "SecurePass123!",
+        "confirm_password": "SecurePass123!"
+    }
+    token_data = register_and_login(base_url, user_data)
+    headers = {"Authorization": f"Bearer {token_data['access_token']}"}
+    
+    response = requests.post(
+        f"{base_url}/calculations", 
+        json={"type": "exponentiation", "inputs": [2, 3], "user_id": "ignored"}, 
+        headers=headers
+    )
+    assert response.status_code == 201
+    assert response.json()["result"] == 8
+
+def test_create_calculation_modulus(base_url: str):
+    user_data = {
+        "first_name": "Calc",
+        "last_name": "Mod",
+        "email": f"calc.mod{uuid4()}@example.com",
+        "username": f"calc_mod_{uuid4()}",
+        "password": "SecurePass123!",
+        "confirm_password": "SecurePass123!"
+    }
+    token_data = register_and_login(base_url, user_data)
+    headers = {"Authorization": f"Bearer {token_data['access_token']}"}
+    
+    response = requests.post(
+        f"{base_url}/calculations", 
+        json={"type": "modulus", "inputs": [10, 3], "user_id": "ignored"}, 
+        headers=headers
+    )
+    assert response.status_code == 201
+    assert response.json()["result"] == 1

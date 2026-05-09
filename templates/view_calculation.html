@@ -199,20 +199,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     let operator;
     switch (type) {
-      case 'addition':
-        operator = '+';
-        break;
-      case 'subtraction':
-        operator = '-';
-        break;
-      case 'multiplication':
-        operator = '×';
-        break;
-      case 'division':
-        operator = '÷';
-        break;
-      default:
-        operator = '?';
+      case 'addition': operator = '+'; break;
+      case 'subtraction': operator = '-'; break;
+      case 'multiplication': operator = '×'; break;
+      case 'division': operator = '÷'; break;
+      case 'exponentiation': operator = '^'; break; 
+      case 'modulus': operator = '%'; break;        
+      default: operator = '?';
     }
     
     const html = `

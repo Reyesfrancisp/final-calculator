@@ -2,7 +2,7 @@
 
 import pytest  # Import the pytest framework for writing and running tests
 from typing import Union  # Import Union for type hinting multiple possible types
-from app.operations import add, subtract, multiply, divide  # Import the calculator functions from the operations module
+from app.operations import add, subtract, multiply, divide, exponentiation, modulus  # Import the calculator functions
 
 # Define a type alias for numbers that can be either int or float
 Number = Union[int, float]
@@ -85,24 +85,8 @@ def test_subtract(a: Number, b: Number, expected: Number) -> None:
     This parameterized test verifies that the 'subtract' function correctly subtracts the
     second number from the first, handling both positive and negative values, as well as
     integers and floats. Parameterization allows for comprehensive testing of multiple cases.
-
-    Parameters:
-    - a (Number): The number from which to subtract.
-    - b (Number): The number to subtract.
-    - expected (Number): The expected result of the subtraction.
-
-    Steps:
-    1. Call the 'subtract' function with arguments 'a' and 'b'.
-    2. Assert that the result is equal to 'expected'.
-
-    Example:
-    >>> test_subtract(5, 3, 2)
-    >>> test_subtract(-5, -3, -2)
     """
-    # Call the 'subtract' function with the provided arguments
     result = subtract(a, b)
-    
-    # Assert that the result of subtract(a, b) matches the expected value
     assert result == expected, f"Expected subtract({a}, {b}) to be {expected}, but got {result}"
 
 
@@ -130,28 +114,8 @@ def test_subtract(a: Number, b: Number, expected: Number) -> None:
 def test_multiply(a: Number, b: Number, expected: Number) -> None:
     """
     Test the 'multiply' function with various combinations of integers and floats.
-
-    This parameterized test verifies that the 'multiply' function correctly multiplies two numbers,
-    handling both positive and negative values, as well as integers and floats. Parameterization
-    enables efficient testing of multiple scenarios in a concise manner.
-
-    Parameters:
-    - a (Number): The first number to multiply.
-    - b (Number): The second number to multiply.
-    - expected (Number): The expected result of the multiplication.
-
-    Steps:
-    1. Call the 'multiply' function with arguments 'a' and 'b'.
-    2. Assert that the result is equal to 'expected'.
-
-    Example:
-    >>> test_multiply(2, 3, 6)
-    >>> test_multiply(-2, 3, -6)
     """
-    # Call the 'multiply' function with the provided arguments
     result = multiply(a, b)
-    
-    # Assert that the result of multiply(a, b) matches the expected value
     assert result == expected, f"Expected multiply({a}, {b}) to be {expected}, but got {result}"
 
 
@@ -179,56 +143,86 @@ def test_multiply(a: Number, b: Number, expected: Number) -> None:
 def test_divide(a: Number, b: Number, expected: float) -> None:
     """
     Test the 'divide' function with various combinations of integers and floats.
-
-    This parameterized test verifies that the 'divide' function correctly divides the first
-    number by the second, handling both positive and negative values, as well as integers
-    and floats. Parameterization allows for efficient and comprehensive testing across multiple cases.
-
-    Parameters:
-    - a (Number): The dividend.
-    - b (Number): The divisor.
-    - expected (float): The expected result of the division.
-
-    Steps:
-    1. Call the 'divide' function with arguments 'a' and 'b'.
-    2. Assert that the result is equal to 'expected'.
-
-    Example:
-    >>> test_divide(6, 3, 2.0)
-    >>> test_divide(-6, 3, -2.0)
     """
-    # Call the 'divide' function with the provided arguments
     result = divide(a, b)
-    
-    # Assert that the result of divide(a, b) matches the expected value
     assert result == expected, f"Expected divide({a}, {b}) to be {expected}, but got {result}"
 
 
 # ---------------------------------------------
-# Negative Test Case: Division by Zero
+# Unit Tests for the 'exponentiation' Function
+# ---------------------------------------------
+
+@pytest.mark.parametrize(
+    "a, b, expected",
+    [
+        (2, 3, 8),           # Test positive exponent
+        (-2, 3, -8),         # Test negative base with odd exponent
+        (2, 0, 1),           # Test zero exponent
+        (9, 0.5, 3.0),       # Test fractional exponent (square root)
+        (2, -1, 0.5),        # Test negative exponent
+    ],
+    ids=[
+        "positive_exponent",
+        "negative_base_odd_exponent",
+        "zero_exponent",
+        "fractional_exponent",
+        "negative_exponent",
+    ]
+)
+def test_exponentiation(a: Number, b: Number, expected: Number) -> None:
+    """
+    Test the 'exponentiation' function with various combinations of integers and floats.
+    """
+    result = exponentiation(a, b)
+    assert result == expected, f"Expected exponentiation({a}, {b}) to be {expected}, but got {result}"
+
+
+# ---------------------------------------------
+# Unit Tests for the 'modulus' Function
+# ---------------------------------------------
+
+@pytest.mark.parametrize(
+    "a, b, expected",
+    [
+        (10, 3, 1),          # Test regular modulus
+        (10, 5, 0),          # Test perfect multiple (zero remainder)
+        (3, 10, 3),          # Test smaller dividend than divisor
+        (5.5, 2, 1.5),       # Test float modulus
+    ],
+    ids=[
+        "regular_modulus",
+        "perfect_multiple",
+        "smaller_dividend",
+        "float_modulus",
+    ]
+)
+def test_modulus(a: Number, b: Number, expected: Number) -> None:
+    """
+    Test the 'modulus' function with various combinations of integers and floats.
+    """
+    result = modulus(a, b)
+    assert result == expected, f"Expected modulus({a}, {b}) to be {expected}, but got {result}"
+
+
+# ---------------------------------------------
+# Negative Test Cases
 # ---------------------------------------------
 
 def test_divide_by_zero() -> None:
     """
     Test the 'divide' function with division by zero.
-
-    This negative test case verifies that attempting to divide by zero raises a ValueError
-    with the appropriate error message. It ensures that the application correctly handles
-    invalid operations and provides meaningful feedback to the user.
-
-    Steps:
-    1. Attempt to call the 'divide' function with arguments 6 and 0, which should raise a ValueError.
-    2. Use pytest's 'raises' context manager to catch the expected exception.
-    3. Assert that the error message contains "Cannot divide by zero!".
-
-    Example:
-    >>> test_divide_by_zero()
     """
-    # Use pytest's context manager to check for a ValueError when dividing by zero
     with pytest.raises(ValueError) as excinfo:
-        # Attempt to divide 6 by 0, which should raise a ValueError
         divide(6, 0)
-    
-    # Assert that the exception message contains the expected error message
-    assert "Cannot divide by zero!" in str(excinfo.value), \
-        f"Expected error message 'Cannot divide by zero!', but got '{excinfo.value}'"
+    assert "Cannot divide by zero" in str(excinfo.value), \
+        f"Expected error message 'Cannot divide by zero', but got '{excinfo.value}'"
+
+
+def test_modulus_by_zero() -> None:
+    """
+    Test the 'modulus' function with modulo by zero.
+    """
+    with pytest.raises(ValueError) as excinfo:
+        modulus(6, 0)
+    assert "Cannot modulo by zero" in str(excinfo.value), \
+        f"Expected error message 'Cannot modulo by zero', but got '{excinfo.value}'"

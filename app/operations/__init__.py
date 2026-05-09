@@ -118,3 +118,18 @@ def divide(a: Number, b: Number) -> float:
     # Perform division of a by b and return the result as a float
     result = a / b
     return result
+
+def exponentiation(a: Number, b: Number) -> Number:
+    """
+    Calculate a raised to the power of b.
+    """
+    return a ** b
+
+def modulus(a: Number, b: Number) -> Number:
+    """
+    Calculate the remainder of a divided by b.
+    Raises ValueError if b is zero.
+    """
+    if b == 0:
+        raise ValueError("Cannot modulo by zero!")
+    return a % b

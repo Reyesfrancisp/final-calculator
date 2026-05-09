@@ -270,7 +270,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const editForm = document.getElementById('editCalculationForm');
   const previewResult = document.getElementById('previewResult');
   
-  // Function to calculate result for preview
+ // Function to calculate result for preview
   function calculatePreview(type, inputs) {
     if (!inputs || inputs.length < 2) {
       return null;
@@ -293,6 +293,16 @@ document.addEventListener('DOMContentLoaded', async () => {
           return 'Cannot divide by zero';
         }
         result = inputs.reduce((a, b, i) => i === 0 ? a : a / b, inputs[0]);
+        break;
+      case 'exponentiation':
+        result = inputs.reduce((a, b, i) => i === 0 ? a : a ** b, inputs[0]);
+        break;
+      case 'modulus':
+        // Avoid modulo by zero
+        if (inputs.some((value, index) => index > 0 && value === 0)) {
+          return 'Cannot modulo by zero';
+        }
+        result = inputs.reduce((a, b, i) => i === 0 ? a : a % b, inputs[0]);
         break;
       default:
         return 'Unknown operation';
@@ -317,21 +327,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     // Create appropriate operator symbol
     let operator;
-    switch (type) {
-      case 'addition':
-        operator = '+';
-        break;
-      case 'subtraction':
-        operator = '-';
-        break;
-      case 'multiplication':
-        operator = '×';
-        break;
-      case 'division':
-        operator = '÷';
-        break;
-      default:
-        operator = '?';
+ switch (type) {
+      case 'addition': operator = '+'; break;
+      case 'subtraction': operator = '-'; break;
+      case 'multiplication': operator = '×'; break;
+      case 'division': operator = '÷'; break;
+      case 'exponentiation': operator = '^'; break;
+      case 'modulus': operator = '%'; break;        
+      default: operator = '?';
     }
     
     // Update preview section
